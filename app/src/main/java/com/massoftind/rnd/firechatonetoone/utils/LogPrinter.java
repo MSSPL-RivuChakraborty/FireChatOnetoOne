@@ -7,7 +7,7 @@ import android.util.Log;
  */
 public class LogPrinter {
 
-    private static boolean debuggable = false;
+    private static boolean debuggable = true;
 
     public static void d(String tag, String message){
         if(isDebuggable()) {
