@@ -15,7 +15,7 @@ package="com.massoftind.rnd.firechatonetoone">
         android:configChanges="orientation|keyboardHidden|screenSize"
         android:label="@string/title_activity_splash_screen"
         android:screenOrientation="portrait"
-        android:theme="@style/FullscreenTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 

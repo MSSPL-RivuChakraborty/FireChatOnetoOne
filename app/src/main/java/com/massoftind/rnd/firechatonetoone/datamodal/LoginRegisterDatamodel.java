@@ -1,5 +1,6 @@
 package com.massoftind.rnd.firechatonetoone.datamodal;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.InputType;
 import android.view.View;
@@ -24,14 +25,19 @@ public class LoginRegisterDatamodel {
     boolean buttonVisible;
     String buttonText;
     View.OnClickListener buttonOnClickListener;
+    boolean profileImageVisible = false;
+    View.OnClickListener profileImageOnClickListener;
+    Bitmap bitmapProfile = null;
 
     public LoginRegisterDatamodel() {
     }
 
     public LoginRegisterDatamodel(String text, String hint, String textValue, String error,
-                                  boolean editTextVisible, boolean textViewVisible, int inputType, boolean isPassWord,
-                                  int editTextColor, int textViewColor, OnRecyclerViewCellClick onClick, boolean buttonVisible,
-                                  String buttonText, View.OnClickListener buttonOnClickListener) {
+                                  boolean editTextVisible, boolean textViewVisible, int inputType,
+                                  boolean isPassWord, int editTextColor, int textViewColor,
+                                  OnRecyclerViewCellClick onClick, boolean buttonVisible, String buttonText,
+                                  View.OnClickListener buttonOnClickListener, boolean profileImageVisible,
+                                  View.OnClickListener profileImageOnClickListener, Bitmap bitmapProfile) {
         this.text = text;
         this.hint = hint;
         this.textValue = textValue;
@@ -46,6 +52,9 @@ public class LoginRegisterDatamodel {
         this.buttonVisible = buttonVisible;
         this.buttonText = buttonText;
         this.buttonOnClickListener = buttonOnClickListener;
+        this.profileImageVisible = profileImageVisible;
+        this.profileImageOnClickListener = profileImageOnClickListener;
+        this.bitmapProfile = bitmapProfile;
     }
 
     public String getText() {
@@ -158,5 +167,52 @@ public class LoginRegisterDatamodel {
 
     public void setButtonOnClickListener(View.OnClickListener buttonOnClickListener) {
         this.buttonOnClickListener = buttonOnClickListener;
+    }
+
+    public boolean isProfileImageVisible() {
+        return profileImageVisible;
+    }
+
+    public void setProfileImageVisible(boolean profileImageVisible) {
+        this.profileImageVisible = profileImageVisible;
+    }
+
+    public View.OnClickListener getProfileImageOnClickListener() {
+        return profileImageOnClickListener;
+    }
+
+    public void setProfileImageOnClickListener(View.OnClickListener profileImageOnClickListener) {
+        this.profileImageOnClickListener = profileImageOnClickListener;
+    }
+
+    public Bitmap getBitmapProfile() {
+        return bitmapProfile;
+    }
+
+    public void setBitmapProfile(Bitmap bitmapProfile) {
+        this.bitmapProfile = bitmapProfile;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginRegisterDatamodel{" +
+                "text='" + text + '\'' +
+                ", hint='" + hint + '\'' +
+                ", textValue='" + textValue + '\'' +
+                ", error='" + error + '\'' +
+                ", editTextVisible=" + editTextVisible +
+                ", textViewVisible=" + textViewVisible +
+                ", inputType=" + inputType +
+                ", isPassWord=" + isPassWord +
+                ", editTextColor=" + editTextColor +
+                ", textViewColor=" + textViewColor +
+                ", onClick=" + onClick +
+                ", buttonVisible=" + buttonVisible +
+                ", buttonText='" + buttonText + '\'' +
+                ", buttonOnClickListener=" + buttonOnClickListener +
+                ", profileImageVisible=" + profileImageVisible +
+                ", profileImageOnClickListener=" + profileImageOnClickListener +
+                ", bitmapProfile=" + bitmapProfile +
+                '}';
     }
 }

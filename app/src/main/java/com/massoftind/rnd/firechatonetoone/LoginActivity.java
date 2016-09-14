@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -24,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         loginRecyclerView = (RecyclerView) findViewById(R.id.loginRecyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        loginRecyclerView.setLayoutManager(layoutManager);
         LoginRegisterDatamodel loginRegisterDatamodel = new LoginRegisterDatamodel("new user?", "", "", "",
                 false, true, 0, false, Color.WHITE, Color.WHITE, new OnRecyclerViewCellClick() {
             @Override
@@ -32,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, false, "", null);
+        }, false, "", null,false,null,null);
         ArrayList<LoginRegisterDatamodel> loginItems = new ArrayList<LoginRegisterDatamodel>();
         loginItems.add(loginRegisterDatamodel);
         adapter = new LoginRegisterAdapter(this,loginItems);
