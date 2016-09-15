@@ -1,6 +1,7 @@
 package com.massoftind.rnd.firechatonetoone;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,8 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.massoftind.rnd.firechatonetoone.adapters.ViewPagerAdapter;
 import com.massoftind.rnd.firechatonetoone.fragments.UsersListFragment;
 
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth auth;
     private FirebaseUser user;
     private FirebaseAuth.AuthStateListener authListener;
+    private String token;
+    private DatabaseReference mFirebaseDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,11 @@ public class MainActivity extends AppCompatActivity
         auth = FirebaseAuth.getInstance();
         user=auth.getCurrentUser();
 
+        SharedPreferences preferences = getSharedPreferences("fcm",MODE_PRIVATE);
+        token = preferences.getString("fcm_token","");
+
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -79,6 +89,10 @@ public class MainActivity extends AppCompatActivity
                 if (user == null) {
                     // user auth state is changed - user is null
                     // launch login activity
+
+                    mFirebaseDatabaseReference.child("devices")
+                            .child(token).removeValue();
+
 
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
@@ -124,6 +138,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
 
             auth.signOut();
+
 
 // this listener will be called when there is change in firebase user session
 
