@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "579836804095",
+    "firebase_url": "https://firechat-one-to-one.firebaseio.com",
+    "project_id": "firechat-one-to-one",
+    "storage_bucket": "firechat-one-to-one.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579836804095:android:a6c8ca01c6fa82c9",
+        "android_client_info": {
+          "package_name": "com.massoftind.rnd.firechatonetoone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579836804095-2i20ukkd7qo5790s7o69m1tflnvmasuo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6IIP5Bd0dcna-_imOqmYgUo39r3OaDOI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

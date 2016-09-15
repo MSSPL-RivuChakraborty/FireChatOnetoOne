@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_20_unit"
+    android:background="@color/white"
+    >
+
+    <RelativeLayout
+        android:id="@+id/upper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/margin_10_unit"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            android:visibility="visible"
+            android:id="@+id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:hint=""
+            android:textSize="14sp"
+            android:maxLines="5"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black"
+            android:background="@drawable/edittext_border_white"
+            />
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/margin"
+        android:layout_width="fill_parent"
+        android:layout_height="2px"
+        android:layout_below="@+id/upper"
+        android:background="@color/dip_gray"
+        android:text="TextView" />
+    <LinearLayout
+        android:id="@+id/lower"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/upper"
+        android:weightSum="100"
+        >
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="50"
+            android:gravity="center"
+            android:text="Cancel"
+            android:textStyle="normal"
+            android:typeface="sans"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/color_bg"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/tvEventDetails"
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/dismiss"
+            android:visibility="visible"
+            android:background="@color/gray"
+            android:text="" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:text="Save"
+            android:gravity="center"
+            android:textColor="@color/color_marron"
+            android:id="@+id/save"
+            android:textStyle="normal"
+            android:typeface="sans"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <!--<TextView
+        android:id="@+id/margin1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/lower"
+        android:background="#D9D9D8"
+        android:text="TextView" />-->
+
+</RelativeLayout>

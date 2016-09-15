@@ -3,4 +3,29 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+
+    <color name="transparent">#00000000</color>
+    <color name="doc_colour">#669DDE</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="base_color">#006DD2</color>
+    <color name="red">#E43232</color>
+    <color name="light_gray">#E1E1E1</color>
+    <color name="post_text_color_gray">#BDBDBD</color>
+    <color name="color_bg">#61559A</color>
+    <color name="color_marron">#ff806c</color>
+    <color name="gray_list_bg">#E6E6E6</color>
+    <color name="menu_topbar_color">#FF806D</color>
+    <color name="header_category_color">#CCD86C5B</color>
+    <color name="color_story_details">#60549A</color>
+    <color name="grid_teransparent_color">#E6EEEDEE</color>
+    <color name="light_white">#D1CEDC</color>
+    <color name="gray">#9B9A9B</color>
+    <color name="dip_gray">#636363</color>
+    <color name="color_light_storyview">#8D7AB9</color>
+    <color name="login_forgot_msg">#a6d4ff</color>
+    <color name="link">#0000EE</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
