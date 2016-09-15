@@ -68,8 +68,6 @@
 
         <activity
             android:name=".SplashScreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_splash_screen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -89,13 +87,13 @@
             android:screenOrientation="portrait"></activity>
 
 
-        <service android:name="com.massoftind.rnd.firechatonetoone.push.MyFirebaseInstanceIDService">
+        <service android:name="com.massoftind.rnd.firechatonetoone.push.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name="com.massoftind.rnd.firechatonetoone.push.MyFirebaseMessagingService">
+        <service android:name="com.massoftind.rnd.firechatonetoone.push.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

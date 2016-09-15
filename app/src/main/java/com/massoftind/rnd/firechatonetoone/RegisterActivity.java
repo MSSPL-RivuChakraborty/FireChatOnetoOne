@@ -3,6 +3,7 @@ package com.massoftind.rnd.firechatonetoone;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -32,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.massoftind.rnd.firechatonetoone.adapters.LoginRegisterAdapter;
+import com.massoftind.rnd.firechatonetoone.datamodal.Device;
 import com.massoftind.rnd.firechatonetoone.datamodal.LoginRegisterDatamodel;
 import com.massoftind.rnd.firechatonetoone.datamodal.User;
 import com.massoftind.rnd.firechatonetoone.interfaces.OnRecyclerViewCellClick;
@@ -152,6 +154,9 @@ public class RegisterActivity extends AppCompatActivity {
         final String fname = registerItems.get(1).getTextValue();
         final String lname = registerItems.get(2).getTextValue();
 
+        SharedPreferences preferences = getSharedPreferences("fcm",MODE_PRIVATE);
+        final String token = preferences.getString("fcm_token","");
+
         final Bitmap profilePicBmp = registerItems.get(0).getBitmapProfile();
 
         if(fname.trim().equalsIgnoreCase("")){
@@ -233,7 +238,9 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.makeText(getBaseContext(),"Invalid Picture",Toast.LENGTH_LONG).show();
                                         LogPrinter.e("RegisterActivity","Pic Upload Error "+exception.getMessage(),exception);
                                         mFirebaseDatabaseReference.child("users")
-                                                .push().setValue(new User(userId, fname, lname, email, password, mobile, profilePicUrl));
+                                                .push().setValue(new User(userId, fname, lname, email, mobile, profilePicUrl));
+                                        mFirebaseDatabaseReference.child("devices")
+                                                .push().setValue(new Device(RegisterActivity.this,userId,token));
                                     }
                                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
@@ -242,12 +249,17 @@ public class RegisterActivity extends AppCompatActivity {
                                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                                         profilePicUrl = downloadUrl.toString();
                                         mFirebaseDatabaseReference.child("users")
-                                                .push().setValue(new User(userId, fname, lname, email, password, mobile, profilePicUrl));
+                                                .push().setValue(new User(userId, fname, lname, email, mobile, profilePicUrl));
+                                        mFirebaseDatabaseReference.child("devices")
+                                                .push().setValue(new Device(RegisterActivity.this,userId,token));
+
                                     }
                                 });
                             } else {
                                 mFirebaseDatabaseReference.child("users")
-                                        .push().setValue(new User(userId, fname, lname, email, password, mobile, profilePicUrl));
+                                        .child(userId).setValue(new User(userId, fname, lname, email, mobile, profilePicUrl));
+                                mFirebaseDatabaseReference.child("devices")
+                                        .push().setValue(new Device(RegisterActivity.this,userId,token));
                             }
 
                             startActivity(new Intent(RegisterActivity.this, MainActivity.class));
