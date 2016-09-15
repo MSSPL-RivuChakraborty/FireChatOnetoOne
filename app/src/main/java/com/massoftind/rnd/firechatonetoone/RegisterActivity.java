@@ -96,6 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
             LoginRegisterDatamodel loginRegisterDatamodel = null;
             switch (i){
                 case 0:
+                    //profile pic
                     loginRegisterDatamodel = new LoginRegisterDatamodel("", "", "", "",
                             false, false, 0, false, 0, 0, null, false, "", null, true, new View.OnClickListener() {
                         @Override
