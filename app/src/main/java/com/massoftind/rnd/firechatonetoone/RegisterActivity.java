@@ -239,9 +239,9 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.makeText(getBaseContext(),"Invalid Picture",Toast.LENGTH_LONG).show();
                                         LogPrinter.e("RegisterActivity","Pic Upload Error "+exception.getMessage(),exception);
                                         mFirebaseDatabaseReference.child("users")
-                                                .push().setValue(new User(userId, fname, lname, email, mobile, profilePicUrl));
+                                                .child(userId).setValue(new User(userId, fname, lname, email, mobile, profilePicUrl));
                                         mFirebaseDatabaseReference.child("devices")
-                                                .push().setValue(new Device(RegisterActivity.this,userId,token));
+                                                .child(token).setValue(new Device(RegisterActivity.this,userId,token));
                                     }
                                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
@@ -250,9 +250,9 @@ public class RegisterActivity extends AppCompatActivity {
                                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                                         profilePicUrl = downloadUrl.toString();
                                         mFirebaseDatabaseReference.child("users")
-                                                .push().setValue(new User(userId, fname, lname, email, mobile, profilePicUrl));
+                                                .child(userId).setValue(new User(userId, fname, lname, email, mobile, profilePicUrl));
                                         mFirebaseDatabaseReference.child("devices")
-                                                .push().setValue(new Device(RegisterActivity.this,userId,token));
+                                                .child(token).setValue(new Device(RegisterActivity.this,userId,token));
 
                                     }
                                 });
@@ -260,7 +260,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 mFirebaseDatabaseReference.child("users")
                                         .child(userId).setValue(new User(userId, fname, lname, email, mobile, profilePicUrl));
                                 mFirebaseDatabaseReference.child("devices")
-                                        .push().setValue(new Device(RegisterActivity.this,userId,token));
+                                        .child(token).setValue(new Device(RegisterActivity.this,userId,token));
                             }
 
                             startActivity(new Intent(RegisterActivity.this, MainActivity.class));

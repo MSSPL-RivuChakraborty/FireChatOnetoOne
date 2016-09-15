@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                             final String userId = auth.getCurrentUser().getUid();
 
                             mFirebaseDatabaseReference.child("devices")
-                                    .push().setValue(new Device(LoginActivity.this,userId,token));
+                                    .child(token).setValue(new Device(LoginActivity.this,userId,token));
 
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finishAffinity();
