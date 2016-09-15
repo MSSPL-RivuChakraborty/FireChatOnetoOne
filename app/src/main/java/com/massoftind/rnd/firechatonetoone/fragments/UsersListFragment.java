@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.massoftind.rnd.firechatonetoone.R;
 import com.massoftind.rnd.firechatonetoone.datamodal.User;
 import com.massoftind.rnd.firechatonetoone.utils.ItemOffsetDecoration;
@@ -93,7 +96,6 @@ public class UsersListFragment extends Fragment {
 
             layoutManager = new LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false);
 //            usersListRecyclerView.setLayoutManager(layoutManager);
-            layoutManager.setStackFromEnd(true);
 
             auth = FirebaseAuth.getInstance();
             user=auth.getCurrentUser();
@@ -103,15 +105,14 @@ public class UsersListFragment extends Fragment {
                 mFirebaseDatabaseReference.keepSynced(true);
             } catch (Exception e){}
 
-            DatabaseReference childReference = mFirebaseDatabaseReference.child(USERS_CHILD);
-            childReference.orderByChild("firstName");
+            Query childReference =  mFirebaseDatabaseReference.child(USERS_CHILD).
+            orderByChild("firstName");
 
-            mFirebaseAdapter = new FirebaseRecyclerAdapter<User,
-                    UserViewHolder>(
+            mFirebaseAdapter = new MyFirebaseAdapter(
                     User.class,
                     R.layout.item_user,
                     UserViewHolder.class,
-                    childReference) {
+                    childReference) /*{
 
 
 
@@ -131,7 +132,7 @@ public class UsersListFragment extends Fragment {
                                 .into(viewHolder.profileImage);
                     }
                 }
-            };
+            }*/;
 
             mFirebaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                 @Override
@@ -154,6 +155,43 @@ public class UsersListFragment extends Fragment {
             usersListRecyclerView.setLayoutManager(layoutManager);
             usersListRecyclerView.setAdapter(mFirebaseAdapter);
         }
+
+    }
+
+    public class MyFirebaseAdapter extends FirebaseRecyclerAdapter<User,
+            UserViewHolder>{
+
+
+        public MyFirebaseAdapter(Class<User> modelClass, int modelLayout, Class<UserViewHolder> viewHolderClass, DatabaseReference ref) {
+            super(modelClass, modelLayout, viewHolderClass, ref);
+        }
+
+        public MyFirebaseAdapter(Class<User> modelClass, int modelLayout, Class<UserViewHolder> viewHolderClass, Query ref) {
+            super(modelClass, modelLayout, viewHolderClass, ref);
+        }
+
+        @Override
+        protected void populateViewHolder(UserViewHolder viewHolder,
+                                          User user, int position) {
+            LogPrinter.w("populateViewHolder","populateViewHolder"+user.getId());
+
+//                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+            if(user.getId().equalsIgnoreCase(UsersListFragment.this.user.getUid())){
+                viewHolder.userName.setText(user.getFirstName() + " " + user.getLastName()+" (me)");
+            } else {
+                viewHolder.userName.setText(user.getFirstName() + " " + user.getLastName());
+            }
+            viewHolder.userEmail.setText(user.getEmail());
+            if (user.getProfilePicUrl() == null || user.getProfilePicUrl().equalsIgnoreCase("")) {
+                viewHolder.profileImage
+                        .setImageResource(R.drawable.ic_account_circle_black_36dp);
+            } else {
+                Glide.with(activity)
+                        .load(user.getProfilePicUrl())
+                        .into(viewHolder.profileImage);
+            }
+        }
+
 
     }
 
