@@ -77,11 +77,11 @@ public class LoginActivity extends AppCompatActivity {
             switch (i){
 
                 case 0:
-                    loginRegisterDatamodel = new LoginRegisterDatamodel("","Email","","",true,false, 0,
+                    loginRegisterDatamodel = new LoginRegisterDatamodel("","Email","","",true,false, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
                             false,Color.WHITE,0,null,false,"",null,false,null,null);
                     break;
                 case 1:
-                    loginRegisterDatamodel = new LoginRegisterDatamodel("","Password","","",true,false, 0,
+                    loginRegisterDatamodel = new LoginRegisterDatamodel("","Password","","",true,false, InputType.TYPE_TEXT_VARIATION_PASSWORD,
                             true,Color.WHITE,0,null,false,"",null,false,null,null);
                     break;
                 case 2:
@@ -95,23 +95,25 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 case 3:
                     loginRegisterDatamodel = new LoginRegisterDatamodel("Forgot Password?", "", "", "", false, true, 0, false, 0, Color.WHITE,
-                            null, false, "", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent i = new Intent(LoginActivity.this,ResetPasswordActivity.class);
-                            startActivity(i);
-                        }
-                    }, false, null, null);
+                            new OnRecyclerViewCellClick() {
+                                @Override
+                                public void onCellClick(View clickedView, int position) {
+                                    Intent intent = new Intent(LoginActivity.this,ResetPasswordActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }, false, "", null, false, null, null);
                     break;
                 case 4:
                     loginRegisterDatamodel = new LoginRegisterDatamodel("New User?", "", "", "", false, true, 0, false, 0, Color.WHITE,
-                            null, false, "", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent i = new Intent(LoginActivity.this,RegisterActivity.class);
-                            startActivity(i);
-                        }
-                    }, false, null, null);
+                            new OnRecyclerViewCellClick() {
+                                @Override
+                                public void onCellClick(View clickedView, int position) {
+                                    Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }, false, "", null, false, null, null);
                     break;
             }
             if(null != loginRegisterDatamodel){

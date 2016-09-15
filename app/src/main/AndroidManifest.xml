@@ -62,9 +62,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SplashScreenActivity"
             android:screenOrientation="portrait"
@@ -93,7 +91,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ResetPasswordActivity"></activity>
+        <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".EditProfileActivity"></activity>
     </application>
 
 </manifest>
