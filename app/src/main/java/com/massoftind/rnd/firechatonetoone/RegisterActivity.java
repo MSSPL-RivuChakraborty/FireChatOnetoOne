@@ -33,10 +33,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.massoftind.rnd.firechatonetoone.adapters.LoginRegisterAdapter;
-import com.massoftind.rnd.firechatonetoone.datamodal.Device;
+import com.massoftind.rnd.firechatonetoone.datamodal.firebase.Device;
 import com.massoftind.rnd.firechatonetoone.datamodal.LoginRegisterDatamodel;
-import com.massoftind.rnd.firechatonetoone.datamodal.User;
-import com.massoftind.rnd.firechatonetoone.interfaces.OnRecyclerViewCellClick;
+import com.massoftind.rnd.firechatonetoone.datamodal.firebase.User;
 import com.massoftind.rnd.firechatonetoone.utils.LogPrinter;
 import com.massoftind.rnd.firechatonetoone.utils.Utils;
 

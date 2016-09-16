@@ -1,4 +1,4 @@
-package com.massoftind.rnd.firechatonetoone.datamodal;
+package com.massoftind.rnd.firechatonetoone.datamodal.firebase;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
