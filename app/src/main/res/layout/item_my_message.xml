@@ -6,10 +6,13 @@
     android:layout_marginBottom="10dp"
     android:layout_marginTop="10dp">
 
+
+
     <LinearLayout
         android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|right"
+        android:layout_gravity="right"
         android:orientation="horizontal">
 
         <ImageView
@@ -19,7 +22,7 @@
             android:src="@drawable/ic_account_circle_black_36dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
@@ -30,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="dcs dkjckckd cbdscbdccbhjdscbjdcb bchjdscbcdbhshjcsd"
+                android:text="dcs "
                 android:ellipsize="end"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
