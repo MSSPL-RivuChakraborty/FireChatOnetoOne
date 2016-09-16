@@ -2,38 +2,28 @@ package com.massoftind.rnd.firechatonetoone;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.massoftind.rnd.firechatonetoone.adapters.LoginRegisterAdapter;
-import com.massoftind.rnd.firechatonetoone.datamodal.Device;
+import com.massoftind.rnd.firechatonetoone.datamodal.firebase.Device;
 import com.massoftind.rnd.firechatonetoone.datamodal.LoginRegisterDatamodel;
-import com.massoftind.rnd.firechatonetoone.datamodal.User;
 import com.massoftind.rnd.firechatonetoone.interfaces.OnRecyclerViewCellClick;
 import com.massoftind.rnd.firechatonetoone.utils.LogPrinter;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {

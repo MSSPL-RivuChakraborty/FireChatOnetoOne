@@ -1,4 +1,4 @@
-package com.massoftind.rnd.firechatonetoone.datamodal;
+package com.massoftind.rnd.firechatonetoone.datamodal.firebase;
 
 /**
  * Created by developer on 14/9/16.
