@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -54,14 +56,24 @@ public class ChatActivity extends AppCompatActivity {
         public TextView messengerTextView;
         public ImageView messengerImageView;
         public TextView messageTimeView;
+        View itemView;
 
         public MessageViewHolder(View v) {
             super(v);
+            itemView= v;
             messageTextView = (TextView) itemView.findViewById(R.id.messageTextView);
             messengerTextView = (TextView) itemView.findViewById(R.id.messengerTextView);
             messengerImageView = (ImageView) itemView.findViewById(R.id.messengerImageView);
             messageTimeView = (TextView) itemView.findViewById(R.id.messageTimeView);
         }
+
+//        public void setView(View v){
+//            itemView= v;
+//            messageTextView = (TextView) itemView.findViewById(R.id.messageTextView);
+//            messengerTextView = (TextView) itemView.findViewById(R.id.messengerTextView);
+//            messengerImageView = (ImageView) itemView.findViewById(R.id.messengerImageView);
+//            messageTimeView = (TextView) itemView.findViewById(R.id.messageTimeView);
+//        }
     }
 
     private FirebaseRecyclerAdapter<Message, MessageViewHolder> mFirebaseAdapter;
@@ -156,6 +168,7 @@ public class ChatActivity extends AppCompatActivity {
                     chatReference.push().setValue(friendlyMessage);
                     mMessageEditText.setText("");
                     Utils.hideKeyboard(ChatActivity.this);
+                    mMessageRecyclerView.scrollToPosition(mFirebaseAdapter.getItemCount());
                 }
             });
 
@@ -174,9 +187,35 @@ public class ChatActivity extends AppCompatActivity {
                 SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, MM-dd HH:mm");
 
                 @Override
+                public int getItemViewType(int position) {
+                    return position;
+                }
+
+                @Override
+                public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//                    super.onCreateViewHolder(parent, viewType);
+
+
+
+                    int viewid = 0;
+                    if (currentFirebaseUser.getUid().equalsIgnoreCase(getItem(viewType).getSenderId())) {
+                        viewid = R.layout.item_my_message;
+                        LogPrinter.d("position",viewType+" my");
+                    } else {
+                        viewid = R.layout.item_message;
+                        LogPrinter.d("position",viewType+" not my");
+                    }
+
+                    ViewGroup view = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(viewid, parent, false);
+                    MessageViewHolder viewHolder = new MessageViewHolder(view);
+                    return viewHolder;
+                }
+
+                @Override
                 protected void populateViewHolder(MessageViewHolder viewHolder,
                                                   Message friendlyMessage, int position) {
 //                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+//                    LogPrinter.d("view",viewHolder.x+"");
                     viewHolder.messageTextView.setText(friendlyMessage.getMessage());
                     viewHolder.messengerTextView.setText(friendlyMessage.getSenderName());
                     String sentTime = friendlyMessage.getTimestamp();
