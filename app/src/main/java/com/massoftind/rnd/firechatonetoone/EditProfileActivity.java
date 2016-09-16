@@ -1,11 +1,14 @@
 package com.massoftind.rnd.firechatonetoone;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +34,7 @@ import com.massoftind.rnd.firechatonetoone.datamodal.Device;
 import com.massoftind.rnd.firechatonetoone.datamodal.LoginRegisterDatamodel;
 import com.massoftind.rnd.firechatonetoone.datamodal.User;
 import com.massoftind.rnd.firechatonetoone.utils.LogPrinter;
+import com.massoftind.rnd.firechatonetoone.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -43,14 +47,15 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabaseReference;
 
+    private static final int REQUEST_CAMERA = 101;
+    private static final int SELECT_FILE = 102;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
-
-        
 
         loginRecyclerView = (RecyclerView) findViewById(R.id.loginRecyclerView);
 
@@ -91,25 +96,13 @@ public class EditProfileActivity extends AppCompatActivity {
                     loginRegisterDatamodel = new LoginRegisterDatamodel("","Last Name","","",true,false, InputType.TYPE_CLASS_TEXT,
                             false,Color.WHITE,0,null,false,"",null,false,null,null);
                     break;
-                /*case 3:
-                    loginRegisterDatamodel = new LoginRegisterDatamodel("","Email","","",true,false, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
-                            false,Color.WHITE,0,null,false,"",null,false,null,null);
-                    break;
-                case 4:
-                    loginRegisterDatamodel = new LoginRegisterDatamodel("","Password","","",true,false, InputType.TYPE_TEXT_VARIATION_PASSWORD,
-                            true,Color.WHITE,0,null,false,"",null,false,null,null);
-                    break;
-                case 5:
-                    loginRegisterDatamodel = new LoginRegisterDatamodel("","Confirm Password","","",true,false, InputType.TYPE_TEXT_VARIATION_PASSWORD,
-                            true,Color.WHITE,0,null,false,"",null,false,null,null);
-                    break;*/
                 case 3:
                     loginRegisterDatamodel = new LoginRegisterDatamodel("","Mobile","","",true,false, InputType.TYPE_CLASS_NUMBER,
                             false,Color.WHITE,0,null,false,"",null,false,null,null);
                     break;
                 case 4:
                     loginRegisterDatamodel = new LoginRegisterDatamodel("", "", "", "", false, false, 0, false, 0, 0,
-                            null, true, "Edit Profile", new View.OnClickListener() {
+                            null, true, "Save Profile", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             validateAndEdit();
@@ -141,9 +134,43 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
+        final String userId = auth.getCurrentUser().getUid();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+        
     }
 
     private void selectImage() {
+
+        Utils.hideKeyboard(this);
+        final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result = Utils.checkPermission(EditProfileActivity.this);
+                if (items[item].equals("Take Photo")) {
+//                    userChoosenTask = "Take Photo";
+                    if (result) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, REQUEST_CAMERA);
+                    }
+                } else if (items[item].equals("Choose from Library")) {
+//                    userChoosenTask = "Choose from Library";
+                    if (result) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+                    }
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
 
     }
 }
