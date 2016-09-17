@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.api.model.StringList;
@@ -50,6 +51,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText mMessageEditText;
     private String groupID;
     private User currentUser;
+    private FirebaseAnalytics firebaseAnalytics;
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         public TextView messageTextView;
@@ -258,6 +260,17 @@ public class ChatActivity extends AppCompatActivity {
 
             mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
             mMessageRecyclerView.setAdapter(mFirebaseAdapter);
+
+            firebaseAnalytics = FirebaseAnalytics.getInstance(ChatActivity.this);
+            //Logs an app event.
+            firebaseAnalytics.logEvent("chat_open", getIntent().getExtras());
+            //Sets whether analytics collection is enabled for this app on this device.
+            firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+            //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+            firebaseAnalytics.setMinimumSessionDuration(20000);
+            //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+            firebaseAnalytics.setSessionTimeoutDuration(500);
+            firebaseAnalytics.setUserId(currentFirebaseUser.getUid());
 
 
         } else {

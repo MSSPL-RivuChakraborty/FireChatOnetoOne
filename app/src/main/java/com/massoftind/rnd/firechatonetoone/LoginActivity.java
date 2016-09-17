@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private ArrayList<LoginRegisterDatamodel> loginItems;
     private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabaseReference;
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
 
         adapter = new LoginRegisterAdapter(this,loginItems);
         loginRecyclerView.setAdapter(adapter);
+
+
 
     }
 
@@ -150,6 +154,17 @@ public class LoginActivity extends AppCompatActivity {
 
                             mFirebaseDatabaseReference.child("devices")
                                     .child(token).setValue(new Device(LoginActivity.this,userId,token));
+
+                            firebaseAnalytics = FirebaseAnalytics.getInstance(LoginActivity.this);
+                            //Logs an app event.
+                            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, null);
+                            //Sets whether analytics collection is enabled for this app on this device.
+                            firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+                            //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+                            firebaseAnalytics.setMinimumSessionDuration(20000);
+                            //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+                            firebaseAnalytics.setSessionTimeoutDuration(500);
+                            firebaseAnalytics.setUserId(userId);
 
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finishAffinity();
