@@ -146,7 +146,6 @@ public class UsersListFragment extends Fragment {
                     }
                 }
             }*/;
-
             mFirebaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                 @Override
                 public void onItemRangeInserted(int positionStart, int itemCount) {

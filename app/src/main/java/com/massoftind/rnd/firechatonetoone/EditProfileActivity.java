@@ -138,7 +138,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
-        
+
     }
 
     private void selectImage() {
