@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.massoftind.rnd.firechatonetoone.adapters.ViewPagerAdapter;
+import com.massoftind.rnd.firechatonetoone.datamodal.firebase.GroupChatUser;
 import com.massoftind.rnd.firechatonetoone.fragments.UsersListFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
+                Intent i = new Intent(MainActivity.this, GroupChatActivity.class);
+                startActivity(i);
 
             }
         });

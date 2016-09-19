@@ -9,7 +9,7 @@
         android:id="@+id/chat_header_group"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/mMessageRecyclerView"
+        android:id="@+id/loginRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/chat_header_group"/>

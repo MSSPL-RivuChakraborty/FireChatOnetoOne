@@ -38,7 +38,7 @@
         android:layout_alignStart="@+id/edit_group_name" />
 
     <ImageView
-        android:id="@+id/btn"
+        android:id="@+id/image_add_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_group_chat"
