@@ -1,11 +1,14 @@
 package com.massoftind.rnd.firechatonetoone;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +40,10 @@ import com.massoftind.rnd.firechatonetoone.utils.LogPrinter;
 import com.massoftind.rnd.firechatonetoone.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -49,6 +56,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private static final int REQUEST_CAMERA = 101;
     private static final int SELECT_FILE = 102;
+    private String profilePicUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,16 +136,68 @@ public class EditProfileActivity extends AppCompatActivity {
 
         final Bitmap profilePicBmp = editItems.get(0).getBitmapProfile();
 
-        if(fname.trim().equalsIgnoreCase("")){
-            editItems.get(1).setError("First Name is required");
-            adapter.notifyItemChanged(1);
-            return;
-        }
+//        if(fname.trim().equalsIgnoreCase("")){
+//            editItems.get(1).setError("First Name is required");
+//            adapter.notifyItemChanged(1);
+//            return;
+//        }
 
         final String userId = auth.getCurrentUser().getUid();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
+
+        final DatabaseReference currentUser = myRef.child(userId);
+
+        if(!fname.trim().equalsIgnoreCase("")){
+            currentUser.child("firstName").setValue(fname.trim());
+        }
+
+        if(profilePicBmp != null){
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://firechat-one-to-one.appspot.com");
+
+            StorageReference profileImageRef = storageRef.child("profile_images/profile_"+userId+".jpg");
+
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            profilePicBmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = profileImageRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                    Toast.makeText(getBaseContext(),"Invalid Picture",Toast.LENGTH_LONG).show();
+                    LogPrinter.e("RegisterActivity","Pic Upload Error "+exception.getMessage(),exception);
+
+
+                    Toast.makeText(getBaseContext(),"Profile Edit Error",Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    profilePicUrl = downloadUrl.toString();
+
+                    if(!"".equalsIgnoreCase(profilePicUrl)){
+                        currentUser.child("profilePicUrl").setValue(profilePicUrl.trim());
+                    }
+
+                    Toast.makeText(getBaseContext(),"Profile Edit Complete",Toast.LENGTH_LONG).show();
+                    finish();
+
+                }
+            });
+        } else {
+            Toast.makeText(getBaseContext(),"Profile Edit Complete",Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+
 
     }
 
@@ -172,5 +232,70 @@ public class EditProfileActivity extends AppCompatActivity {
         });
         builder.show();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA) {
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                File destination = new File(Environment.getExternalStorageDirectory(),
+                        "UsersApp_" + System.currentTimeMillis() + ".jpg");
+                FileOutputStream fo;
+                try {
+                    destination.createNewFile();
+                    fo = new FileOutputStream(destination);
+                    fo.write(bytes.toByteArray());
+                    fo.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String fileAddress = destination.getAbsolutePath();
+                editItems.get(0).setBitmapProfile(thumbnail);
+                adapter.notifyItemChanged(0);
+            } else if (requestCode == SELECT_FILE) {
+                Bitmap bm = null;
+                if (data != null) {
+                    try {
+                        bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                        String fileAddress = getRealPathFromURI(this, data.getData());
+                        if(null != bm){
+                            editItems.get(0).setBitmapProfile(bm);
+                            adapter.notifyItemChanged(0);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+//                attachImg.setImageBitmap(bm);
+            }
+        }
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) { // get absolute file path from the galary image uri
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        selectImage();
     }
 }

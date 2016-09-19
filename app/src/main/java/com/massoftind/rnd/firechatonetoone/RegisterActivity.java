@@ -231,7 +231,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                             if(profilePicBmp != null){
-                                profilePicUrl = uploadBmpToStorage(userId);
+
 
                                 FirebaseStorage storage = FirebaseStorage.getInstance();
                                 StorageReference storageRef = storage.getReferenceFromUrl("gs://firechat-one-to-one.appspot.com");
@@ -283,10 +283,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private String uploadBmpToStorage(String userId) {
 
-        return null;
-    }
 
     public String getRealPathFromURI(Context context, Uri contentUri) { // get absolute file path from the galary image uri
         Cursor cursor = null;
