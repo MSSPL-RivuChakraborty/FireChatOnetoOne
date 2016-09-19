@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int SELECT_FILE = 102;
     private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabaseReference;
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,6 +217,17 @@ public class RegisterActivity extends AppCompatActivity {
                             mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
                             final String userId = auth.getCurrentUser().getUid();
+
+                            firebaseAnalytics = FirebaseAnalytics.getInstance(RegisterActivity.this);
+                            //Logs an app event.
+                            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, null);
+                            //Sets whether analytics collection is enabled for this app on this device.
+                            firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+                            //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+                            firebaseAnalytics.setMinimumSessionDuration(20000);
+                            //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+                            firebaseAnalytics.setSessionTimeoutDuration(500);
+                            firebaseAnalytics.setUserId(userId);
 
 
                             if(profilePicBmp != null){

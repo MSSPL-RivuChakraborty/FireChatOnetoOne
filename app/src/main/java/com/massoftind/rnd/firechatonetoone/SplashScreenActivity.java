@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -22,6 +23,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private Runnable runnable;
     private Handler handler;
     private FirebaseAuth auth;
+    private FirebaseAnalytics firebaseAnalytics;
 
 
     @Override
@@ -62,6 +64,13 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         };
         handler.postDelayed(runnable, SPLASH_TIME_OUT);
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN,null);
+        //Sets whether analytics collection is enabled for this app on this device.
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+        firebaseAnalytics.setMinimumSessionDuration(20000);
 
     }
 
